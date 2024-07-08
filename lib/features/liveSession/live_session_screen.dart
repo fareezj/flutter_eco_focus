@@ -1,5 +1,6 @@
 import 'package:eco_focus/features/liveSession/live_session_view_model.dart';
 import 'package:eco_focus/models/session/session_model.dart';
+import 'package:eco_focus/shared/widgets/custom_dialog.dart';
 import 'package:eco_focus/shared/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,10 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
 
     _animationController.addListener(() {
       setState(() {});
+      if (_animationController.isCompleted) {
+        print('Completed!');
+        _onSaveSession();
+      }
     });
 
     _animationController.forward();
@@ -47,8 +52,58 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
     return Duration(minutes: minutes, seconds: seconds);
   }
 
+  String _parseTimer(Duration duration) {
+    String minutes = duration.inMinutes.toString().padLeft(2, '0');
+    String seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
+    return "$minutes:$seconds";
+  }
+
+  _onCancel(BuildContext context) {
+    _stopTimer();
+    CustomDialog().confirmDialog(
+      context: context,
+      content: "This session will be removed.",
+      onProceed: () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+      onCancel: () {
+        Navigator.pop(context);
+        _startTimer();
+      },
+    );
+  }
+
+  _onSaveSession() {
+    final liveSessionViewModel =
+        Provider.of<LiveSessionViewModel>(context, listen: false);
+    liveSessionViewModel
+        .saveSession(
+          SessionModel(
+              id: '2',
+              name: 'test',
+              categoryId: '2',
+              targetTime: widget.selectedTime.toString(),
+              focusedTime: widget.selectedTime.toString(),
+              createdTime: DateTime.now().toString(),
+              createdDate: DateTime.now().toString(),
+              treeGrowthLevel: "1"),
+        )
+        .then(
+          (a) => CustomDialog().infoDialog(
+            context: context,
+            title: 'Session Completed!',
+            content: 'You have completed your focus session.',
+            onProceed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          ),
+        );
+  }
+
   void _startTimer() => _animationController.forward();
-  void _endTimer() => _animationController.stop();
+  void _stopTimer() => _animationController.stop();
   void _restartTimer() => _animationController.forward(from: 0);
 
   @override
@@ -77,19 +132,35 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
                 ),
                 const SizedBox(height: 40.0),
                 TextWidgets.titleText(
-                  text: '${(setDuration * (1 - _animationController.value))}s',
+                  text: _parseTimer(
+                      (setDuration * (1 - _animationController.value))),
                 ),
-                ElevatedButton(
-                  onPressed: _startTimer,
-                  child: const Text('Start'),
-                ),
-                ElevatedButton(
-                  onPressed: _endTimer,
-                  child: const Text('End'),
-                ),
-                ElevatedButton(
-                  onPressed: _restartTimer,
-                  child: const Text('Restart'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 70.0, vertical: 50.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => _onCancel(context),
+                        child: const Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          CustomDialog().infoDialog(
+                            context: context,
+                            title: 'Session Completed!',
+                            content: 'You have completed your focus session.',
+                            onProceed: () {
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                        child: const Text('Start'),
+                      ),
+                    ],
+                  ),
                 ),
                 Consumer<LiveSessionViewModel>(
                   builder: (context, value, child) {

@@ -14,13 +14,15 @@ class TextWidgets {
     );
   }
 
-  static Text secondaryTitleText({
-    required String text,
-  }) {
+  static Text secondaryTitleText(
+      {required String text,
+      double fontSize = 20.0,
+      TextAlign textAlign = TextAlign.start}) {
     return Text(
       text,
+      textAlign: textAlign,
       style: GoogleFonts.workSans(
-        fontSize: 20.0,
+        fontSize: fontSize,
         fontWeight: FontWeight.normal,
       ),
     );
