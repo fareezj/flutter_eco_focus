@@ -1,6 +1,7 @@
 import 'package:eco_focus/features/liveSession/live_session_screen.dart';
 import 'package:eco_focus/features/startSession/start_session_screen.dart';
 import 'package:eco_focus/main_screen.dart';
+import 'package:eco_focus/models/category/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_focus/features/auth/sign_in_screen.dart';
 import 'package:eco_focus/features/auth/sign_up_screen.dart';
@@ -44,7 +45,7 @@ class RouterGenerator {
 }
 
 class LiveSessionArguments {
-  final String selectedCategory;
+  final CategoryModel selectedCategory;
   final String selectedFocusTime;
 
   LiveSessionArguments(

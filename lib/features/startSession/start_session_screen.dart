@@ -1,5 +1,6 @@
 import 'package:eco_focus/db/app_database.dart';
 import 'package:eco_focus/db/dao/category_dao.dart';
+import 'package:eco_focus/models/category/category_model.dart';
 import 'package:eco_focus/repositories/category_repository.dart';
 import 'package:eco_focus/repositories/impl/category_repository_impl.dart';
 import 'package:eco_focus/router/router_generator.dart';
@@ -16,7 +17,7 @@ class StartSessionScreen extends StatefulWidget {
 }
 
 class _StartSessionScreenState extends State<StartSessionScreen> {
-  List<String> categoryList = [];
+  List<CategoryModel> categoryList = [];
   List<String> timerList = [
     "05:00",
     "10:00",
@@ -42,8 +43,8 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
     if (seededCategoryList != null) {
       setState(
         () {
-          categoryList = seededCategoryList.map((e) => e.name).toList();
-          selectedCategory = categoryList.first;
+          categoryList = seededCategoryList;
+          selectedCategory = categoryList.first.name;
           selectedTimer = timerList.first;
         },
       );
@@ -83,11 +84,10 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
                   TextWidgets.secondaryTitleText(text: 'Select Category:'),
                   const SizedBox(height: 8),
                   CustomDropdown(
-                    onSelectedValue: (val) =>
-                        setState(() => selectedCategory = val),
-                    selectedValue: selectedCategory,
-                    valueList: categoryList,
-                  ),
+                      onSelectedValue: (val) =>
+                          setState(() => selectedCategory = val),
+                      selectedValue: selectedCategory,
+                      valueList: categoryList.map((e) => e.name).toList()),
                 ],
                 const SizedBox(height: 20.0),
                 if (selectedTimer.isNotEmpty) ...[
@@ -106,7 +106,8 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
                     context,
                     '/live-session',
                     arguments: LiveSessionArguments(
-                      selectedCategory: selectedCategory,
+                      selectedCategory: categoryList
+                          .firstWhere((val) => val.name == selectedCategory),
                       selectedFocusTime: selectedTimer,
                     ),
                   ),

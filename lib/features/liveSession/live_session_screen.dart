@@ -1,12 +1,14 @@
 import 'package:eco_focus/features/liveSession/live_session_view_model.dart';
+import 'package:eco_focus/models/category/category_model.dart';
 import 'package:eco_focus/models/session/session_model.dart';
 import 'package:eco_focus/shared/widgets/custom_dialog.dart';
 import 'package:eco_focus/shared/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/v4.dart';
 
 class LiveSessionScreen extends StatefulWidget {
-  final String selectedCategory;
+  final CategoryModel selectedCategory;
   final String selectedTime;
   const LiveSessionScreen({
     super.key,
@@ -75,14 +77,15 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
   }
 
   _onSaveSession() {
+    var id = const UuidV4();
     final liveSessionViewModel =
         Provider.of<LiveSessionViewModel>(context, listen: false);
     liveSessionViewModel
         .saveSession(
           SessionModel(
-              id: '2',
-              name: 'test',
-              categoryId: '2',
+              id: id.toString(),
+              name: widget.selectedCategory.name,
+              categoryId: widget.selectedCategory.name,
               targetTime: widget.selectedTime.toString(),
               focusedTime: widget.selectedTime.toString(),
               createdTime: DateTime.now().toString(),
@@ -115,7 +118,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
           child: Center(
             child: Column(
               children: [
-                TextWidgets.titleText(text: widget.selectedCategory),
+                TextWidgets.titleText(text: widget.selectedCategory.name),
                 TextWidgets.secondaryTitleText(
                     text: 'Target Time: ${widget.selectedTime}'),
                 const SizedBox(height: 50.0),
