@@ -5,6 +5,8 @@ class AppColors {
   static const Color backgroundColor = Color(0xFFdce7c8);
   static const Color textColor = Color(0xFFdce7c8);
   static const Color accentColor = Color(0xFF386663);
+  static const Color contentColorPink = Color.fromARGB(255, 255, 0, 174);
+  static const Color contentColorCyan = Color.fromARGB(255, 0, 122, 252);
 
   static const Color darkPrimaryColor = Color(0xFFb1d18a);
   static const Color darkBackgroundColor = Color(0xFFbfcbad);

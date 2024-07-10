@@ -11,7 +11,7 @@ class _AchievementsWidgetState extends State<AchievementsWidget> {
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
-      height: 300,
+      height: 100,
       child: Text('Achievements'),
     );
   }

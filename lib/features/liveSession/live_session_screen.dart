@@ -30,7 +30,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
     super.initState();
 
     setState(() {
-      setDuration = _parseDuration(widget.selectedTime);
+      setDuration = _parseDuration("0:10");
     });
 
     _animationController =
@@ -191,7 +191,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
 
   @override
   void dispose() {
-    super.dispose();
     _animationController.dispose();
+    super.dispose();
   }
 }

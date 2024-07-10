@@ -8,6 +8,9 @@ class HomeScreenViewModel extends ChangeNotifier {
   HomeScreenViewModel({required this.sessionRepository});
 
   bool isDarkTheme = false;
+  List<SessionModel>? sessions;
+  List<String> xAxisList = [];
+  List<String> yAxisList = [];
 
   void switchTheme() {
     isDarkTheme = !isDarkTheme;
@@ -16,7 +19,20 @@ class HomeScreenViewModel extends ChangeNotifier {
 
   Future<List<SessionModel>?> getAllSession() async {
     try {
-      return await sessionRepository.getAllSession();
+      xAxisList.clear();
+      yAxisList.clear();
+      var result = await sessionRepository.getAllSession();
+      sessions = result;
+      notifyListeners();
+
+      if (result != null) {
+        for (var element in result) {
+          xAxisList.add(element.createdDate);
+          yAxisList.add(element.focusedTime);
+        }
+      }
+      notifyListeners();
+      return result;
     } catch (e) {
       throw Exception(e);
     }
