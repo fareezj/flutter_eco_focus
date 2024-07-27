@@ -19,18 +19,22 @@ class StartSessionScreen extends StatefulWidget {
 class _StartSessionScreenState extends State<StartSessionScreen> {
   List<CategoryModel> categoryList = [];
   List<String> timerList = [
-    "05:00",
-    "10:00",
-    "15:00",
-    "20:00",
-    "25:00",
-    "30:00",
-    "35:00",
-    "40:00",
-    "45:00",
-    "50:00",
-    "55:00",
-    "60:00",
+    "01:00",
+    "02:00",
+    "03:00",
+    "04:00",
+    // "05:00",
+    // "10:00",
+    // "15:00",
+    // "20:00",
+    // "25:00",
+    // "30:00",
+    // "35:00",
+    // "40:00",
+    // "45:00",
+    // "50:00",
+    // "55:00",
+    // "60:00",
   ];
   String selectedTimer = "";
   String selectedCategory = "";

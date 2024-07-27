@@ -77,7 +77,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
   }
 
   _onSaveSession() {
-    var id = const UuidV4();
+    var id = const UuidV4().generate();
     final liveSessionViewModel =
         Provider.of<LiveSessionViewModel>(context, listen: false);
     liveSessionViewModel
@@ -88,8 +88,10 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
               categoryId: widget.selectedCategory.name,
               targetTime: widget.selectedTime.toString(),
               focusedTime: widget.selectedTime.toString(),
-              createdTime: DateTime.now().toString(),
-              createdDate: DateTime.now().toString(),
+              createdTime:
+                  DateTime.now().add(const Duration(days: 1)).toString(),
+              createdDate:
+                  DateTime.now().add(const Duration(days: 5)).toString(),
               treeGrowthLevel: "1"),
         )
         .then(
@@ -168,15 +170,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
                 Consumer<LiveSessionViewModel>(
                   builder: (context, value, child) {
                     return ElevatedButton(
-                      onPressed: () => value.saveSession(SessionModel(
-                          id: '1',
-                          name: 'test',
-                          categoryId: '1',
-                          targetTime: widget.selectedTime.toString(),
-                          focusedTime: widget.selectedTime.toString(),
-                          createdTime: DateTime.now().toString(),
-                          createdDate: DateTime.now().toString(),
-                          treeGrowthLevel: "1")),
+                      onPressed: () => _onSaveSession(),
                       child: const Text('Save'),
                     );
                   },
