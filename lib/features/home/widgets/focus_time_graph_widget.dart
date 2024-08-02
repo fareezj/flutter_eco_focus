@@ -1,9 +1,9 @@
 import 'package:eco_focus/features/home/home_screen_view_model.dart';
-import 'package:eco_focus/features/home/widgets/line_charts.dart';
 import 'package:eco_focus/style/colors.dart';
 import 'package:eco_focus/utils/utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class FocusTimeGraphWidget extends StatefulWidget {
@@ -14,19 +14,55 @@ class FocusTimeGraphWidget extends StatefulWidget {
 }
 
 class _FocusTimeGraphWidgetState extends State<FocusTimeGraphWidget> {
+  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+  DateFormat dateFormatMonth = DateFormat('MMMM');
+  int addedDays = 5;
+
   @override
   Widget build(BuildContext context) {
-    return const Card(
-      child: Column(
-        children: [
-          Text('Focus Time'),
-          SizedBox(
-            height: 250,
-            width: 400,
-            child: FocusTimeChart(),
-          ),
-        ],
-      ),
+    return Consumer<HomeScreenViewModel>(
+      builder: (context, value, child) {
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                    onTap: () => value.switchDate(DateSwitchMode.previous),
+                    child: const Icon(Icons.arrow_back_ios_new)),
+                Text(dateFormat.format(value.startDate).toString()),
+                const SizedBox(width: 20.0),
+                Text(dateFormat.format(value.endDate).toString()),
+                GestureDetector(
+                    onTap: () => value.switchDate(DateSwitchMode.next),
+                    child: const Icon(Icons.arrow_forward_ios)),
+              ],
+            ),
+            const SizedBox(height: 12.0),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 22.0, horizontal: 12.0),
+                child: Column(
+                  children: [
+                    const Text('Focus Time'),
+                    Text(dateFormatMonth.format(value.startDate).toString()),
+                    const SizedBox(height: 12.0),
+                    if (value.xAxisList.isNotEmpty) ...[
+                      const SizedBox(height: 200, child: FocusTimeChart())
+                    ] else
+                      const SizedBox(
+                        height: 200,
+                        width: double.maxFinite,
+                        child: Center(child: Text('No focus recorded')),
+                      )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -49,6 +85,7 @@ double calculateMaxY(Map<String, double> aggregatedData) {
 class _FocusTimeChartState extends State<FocusTimeChart> {
   LineChartData get chartData {
     final viewModel = Provider.of<HomeScreenViewModel>(context, listen: true);
+
     final aggregatedData =
         aggregateData(viewModel.xAxisList, viewModel.yAxisList);
 
@@ -62,7 +99,7 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
       borderData: borderData,
       lineBarsData: lineBarsData1,
       minX: 0,
-      maxX: 14,
+      maxX: 6,
       maxY: maxY,
       minY: minY,
     );
@@ -75,7 +112,7 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
   LineTouchData get lineTouchData1 => LineTouchData(
         handleBuiltInTouches: true,
         touchTooltipData: LineTouchTooltipData(
-          getTooltipColor: (touchedSpot) => Colors.blueGrey.withOpacity(0.8),
+          getTooltipColor: (touchedSpot) => Colors.blue.withOpacity(0.5),
         ),
       );
 
@@ -93,26 +130,15 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
         ),
       );
 
-  LineChartBarData get lineChartBarData1_1 => LineChartBarData(
-        isCurved: true,
-        color: AppColors.primaryColor,
-        barWidth: 8,
-        isStrokeCapRound: true,
-        dotData: const FlDotData(show: false),
-        belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 4),
-          FlSpot(3, 1.5),
-          FlSpot(5, 1.4),
-          FlSpot(7, 3.4),
-          FlSpot(10, 2),
-          FlSpot(12, 2.2),
-          FlSpot(13, 1.8),
-        ],
-      );
-
   FlTitlesData get titlesData1 => FlTitlesData(
         bottomTitles: AxisTitles(
+          axisNameWidget: const Text(
+            'Day',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
           sideTitles: bottomTitles,
         ),
         rightTitles: const AxisTitles(
@@ -122,6 +148,13 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
           sideTitles: SideTitles(showTitles: false),
         ),
         leftTitles: AxisTitles(
+          axisNameWidget: const Text(
+            'Cumulative Time (mins)',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
           sideTitles: leftTitles(),
         ),
       );
@@ -133,32 +166,6 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
         getTitlesWidget: bottomTitleWidgets,
       );
 
-  List<int> calculatePositions(int dataCount, int columnCount) {
-    List<int> positions = [];
-    if (dataCount > 1) {
-      int interval = (columnCount - 1) ~/ (dataCount - 1);
-      for (int i = 0; i < dataCount; i++) {
-        positions.add(i * interval);
-      }
-    } else {
-      positions.add(0); // If there's only one data point, place it at the start
-    }
-    return positions;
-  }
-
-  List<MapEntry<int, Widget>>? combineLists(List list1, List list2) {
-    if (list1.isEmpty || list2.isEmpty) {
-      return null;
-    }
-    List<MapEntry<int, Widget>> result = [];
-    for (int i = 0; i < list1.length; i++) {
-      int a = list1[i];
-      Widget b = list2[i];
-      result.add(MapEntry(a, b));
-    }
-    return result;
-  }
-
   Map<String, double> aggregateData(List<String> dates, List<String> values) {
     Map<String, double> aggregatedData = {};
 
@@ -167,6 +174,7 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
         values.map((e) => double.tryParse(e.substring(0, 2)) ?? 0.0).toList();
 
     for (int i = 0; i < dates.length; i++) {
+      print(yValues[i]);
       // Extract only the date part
       String datePart = dates[i].split(' ')[0];
 
@@ -192,35 +200,6 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
     return spots;
   }
 
-  Map<String, List<double>> groupData(List<String> dates, List<String> values) {
-    Map<String, List<double>> groupedData = {};
-    var yVal = values.map((e) => double.parse(e.substring(0, 2))).toList();
-
-    for (int i = 0; i < dates.length; i++) {
-      if (groupedData.containsKey(dates[i])) {
-        groupedData[dates[i]]!.add(yVal[i]);
-      } else {
-        groupedData[dates[i]] = [yVal[i]];
-      }
-    }
-
-    return groupedData;
-  }
-
-  List<FlSpot> generateSpots(Map<String, List<double>> groupedData) {
-    List<FlSpot> spots = [];
-    int index = 0;
-
-    groupedData.forEach((date, values) {
-      for (var value in values) {
-        spots.add(FlSpot(index.toDouble(), value));
-      }
-      index++;
-    });
-
-    return spots;
-  }
-
   LineChartBarData get lineChartBarData1_2 {
     final viewModel = Provider.of<HomeScreenViewModel>(context, listen: true);
 
@@ -231,7 +210,7 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
       color: AppColors.primaryColor,
       barWidth: 8,
       isStrokeCapRound: true,
-      dotData: const FlDotData(show: true), // Show dots for each value
+      dotData: const FlDotData(show: true),
       belowBarData: BarAreaData(show: false),
       spots: generateAggregatedSpots(aggregatedData),
     );
@@ -243,12 +222,14 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
     final aggregatedData =
         aggregateData(viewModel.xAxisList, viewModel.yAxisList);
     final dateList = aggregatedData.keys.toList();
-    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
+    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 13);
 
     Widget text = const Text('');
     if (value < dateList.length) {
-      text = Text(Utils().dayParser(dateList[value.toInt()]).toString(),
-          style: style);
+      text = Text(
+        Utils().dayParser(dateList[value.toInt()]).toString(),
+        style: style,
+      );
     }
 
     return SideTitleWidget(
@@ -259,12 +240,12 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
+    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 13);
     String text = value.toStringAsFixed(1);
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 10,
+      space: 20,
       child: Text(text, style: style),
     );
   }
@@ -272,25 +253,37 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
   SideTitles leftTitles() => SideTitles(
         getTitlesWidget: leftTitleWidgets,
         showTitles: true,
-        interval: (calculateMaxY(aggregateData(
-                    Provider.of<HomeScreenViewModel>(context, listen: false)
-                        .xAxisList,
-                    Provider.of<HomeScreenViewModel>(context, listen: false)
-                        .yAxisList)) -
-                calculateMinY(aggregateData(
-                    Provider.of<HomeScreenViewModel>(context, listen: false)
-                        .xAxisList,
-                    Provider.of<HomeScreenViewModel>(context, listen: false)
-                        .yAxisList))) /
-            (5 - 1),
+        interval: 5,
         reservedSize: 60,
       );
 
+  //   interval: (calculateMaxY(
+  //       aggregateData(
+  //           Provider.of<HomeScreenViewModel>(context, listen: false)
+  //               .xAxisList,
+  //           Provider.of<HomeScreenViewModel>(context, listen: false)
+  //               .yAxisList),
+  //     ) -
+  //     calculateMinY(
+  //       aggregateData(
+  //           Provider.of<HomeScreenViewModel>(context, listen: false)
+  //               .xAxisList,
+  //           Provider.of<HomeScreenViewModel>(context, listen: false)
+  //               .yAxisList),
+  //     )) /
+  // (5 - 1),
+
   @override
   Widget build(BuildContext context) {
-    return LineChart(
-      chartData,
-      duration: const Duration(milliseconds: 100),
-    );
+    final viewModel = Provider.of<HomeScreenViewModel>(context, listen: true);
+
+    if (viewModel.xAxisList.isNotEmpty && viewModel.xAxisList.isNotEmpty) {
+      return LineChart(
+        chartData,
+        duration: const Duration(milliseconds: 100),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }

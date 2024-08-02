@@ -15,7 +15,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     final viewModel = Provider.of<HomeScreenViewModel>(context, listen: false);
-    viewModel.getAllSession();
+    viewModel.getAllSession(
+      startDate: DateTime.parse("2024-07-25"),
+      endDate: DateTime.parse("2024-07-25").add(const Duration(days: 5)),
+    );
 
     super.initState();
   }
@@ -28,24 +31,33 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(child: Consumer<HomeScreenViewModel>(
         builder: (context, value, child) {
           return SingleChildScrollView(
-            child: Column(
-              children: [
-                const Text('Eco Focus'),
-                const AchievementsWidget(),
-                FocusTimeGraphWidget(),
-                Text(value.xAxisList.toString()),
-                Text(value.yAxisList.toString()),
-                ElevatedButton(
-                    onPressed: () =>
-                        value.getAllSession().then((a) => print(a)),
-                    child: const Text('Get Sessions')),
-                Switch(
-                  value: value.isDarkTheme,
-                  onChanged: (_) {
-                    value.switchTheme();
-                  },
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              child: Column(
+                children: [
+                  const Text('Eco Focus'),
+                  const AchievementsWidget(),
+                  const FocusTimeGraphWidget(),
+                  Visibility(
+                    visible: false,
+                    child: ElevatedButton(
+                      onPressed: () => value.getAllSession(
+                        startDate: DateTime.now(),
+                        endDate: DateTime.now().add(
+                          const Duration(days: 6),
+                        ),
+                      ),
+                      child: const Text('Get Sessions'),
+                    ),
+                  ),
+                  Switch(
+                    value: value.isDarkTheme,
+                    onChanged: (_) {
+                      value.switchTheme();
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         },

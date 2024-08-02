@@ -91,7 +91,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
               createdTime:
                   DateTime.now().add(const Duration(days: 1)).toString(),
               createdDate:
-                  DateTime.now().add(const Duration(days: 5)).toString(),
+                  DateTime.now().add(const Duration(days: 6)).toString(),
               treeGrowthLevel: "1"),
         )
         .then(
