@@ -36,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   const Text('Eco Focus'),
-                  const AchievementsWidget(),
-                  const FocusTimeGraphWidget(),
+                  // const AchievementsWidget(),
+                  // const FocusTimeGraphWidget(),
                   Visibility(
                     visible: false,
                     child: ElevatedButton(
