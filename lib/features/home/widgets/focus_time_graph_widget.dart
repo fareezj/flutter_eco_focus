@@ -1,4 +1,5 @@
 import 'package:eco_focus/features/home/home_screen_view_model.dart';
+import 'package:eco_focus/shared/widgets/text_widgets.dart';
 import 'package:eco_focus/style/colors.dart';
 import 'package:eco_focus/utils/utils.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -24,16 +25,20 @@ class _FocusTimeGraphWidgetState extends State<FocusTimeGraphWidget> {
       builder: (context, value, child) {
         return Column(
           children: [
-            const SizedBox(height: 12.0),
+            const SizedBox(height: 50.0),
             Card(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 22.0, horizontal: 12.0),
                 child: Column(
                   children: [
-                    const Text('Focus Time'),
-                    Text(dateFormatMonth.format(value.startDate).toString()),
-                    const SizedBox(height: 12.0),
+                    TextWidgets.secondaryTitleText(
+                        text: 'Focus Time', fontSize: 16.0),
+                    TextWidgets.secondaryTitleText(
+                        text:
+                            dateFormatMonth.format(value.startDate).toString(),
+                        fontSize: 14.0),
+                    const SizedBox(height: 16.0),
                     if (value.xAxisList.isNotEmpty) ...[
                       const SizedBox(height: 200, child: FocusTimeChart())
                     ] else
@@ -240,20 +245,25 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
         getTitlesWidget: leftTitleWidgets,
         showTitles: true,
         interval: (calculateMaxY(
-                  aggregateData(
-                      Provider.of<HomeScreenViewModel>(context, listen: false)
-                          .xAxisList,
-                      Provider.of<HomeScreenViewModel>(context, listen: false)
-                          .yAxisList),
-                ) -
-                calculateMinY(
-                  aggregateData(
-                      Provider.of<HomeScreenViewModel>(context, listen: false)
-                          .xAxisList,
-                      Provider.of<HomeScreenViewModel>(context, listen: false)
-                          .yAxisList),
-                )) /
-            (5 - 1),
+                      aggregateData(
+                          Provider.of<HomeScreenViewModel>(context,
+                                  listen: false)
+                              .xAxisList,
+                          Provider.of<HomeScreenViewModel>(context,
+                                  listen: false)
+                              .yAxisList),
+                    ) -
+                    calculateMinY(
+                      aggregateData(
+                          Provider.of<HomeScreenViewModel>(context,
+                                  listen: false)
+                              .xAxisList,
+                          Provider.of<HomeScreenViewModel>(context,
+                                  listen: false)
+                              .yAxisList),
+                    )) /
+                (5 - 1) -
+            10,
         reservedSize: 60,
       );
 

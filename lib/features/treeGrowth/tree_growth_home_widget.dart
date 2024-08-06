@@ -31,8 +31,8 @@ class _TreeGrowthHomeWidgetState extends State<TreeGrowthHomeWidget> {
     return SizedBox(
       height: 250.0,
       child: Center(
-        child: Consumer<TreeGrowthViewModel>(
-          builder: (context, value, child) => Column(
+        child: Consumer<TreeGrowthViewModel>(builder: (context, value, child) {
+          return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
@@ -41,36 +41,10 @@ class _TreeGrowthHomeWidgetState extends State<TreeGrowthHomeWidget> {
                   alignment: Alignment.bottomCenter,
                   children: value.plantedTrees.toList(),
                 ),
-              )
-              // Stack(
-              //   alignment: Alignment.bottomCenter,
-              //   children: [
-              //     Consumer<TreeGrowthViewModel>(
-              //       builder: (context, value, child) {
-              //         print(value.plantedTrees);
-              //         return Row(
-              //           children: value.plantedTrees.toList(),
-              //         );
-              //       },
-              //     ),
-              //     Container(
-              //       height: 20.0,
-              //       width: MediaQuery.of(context).size.width,
-              //       decoration: const BoxDecoration(
-              //         color: Colors.brown,
-              //         borderRadius: BorderRadius.only(
-              //           topLeft: Radius.circular(20.0),
-              //           topRight: Radius.circular(20.0),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // const SizedBox(height: 20),
-              // ElevatedButton(onPressed: _toggleImage, child: const Text('change'))
+              ),
             ],
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

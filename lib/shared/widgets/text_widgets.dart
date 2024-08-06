@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class TextWidgets {
   static Text titleText({
@@ -7,9 +6,10 @@ class TextWidgets {
   }) {
     return Text(
       text,
-      style: GoogleFonts.workSans(
+      style: const TextStyle(
+        fontFamily: 'Barlow',
         fontSize: 24.0,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
@@ -21,9 +21,24 @@ class TextWidgets {
     return Text(
       text,
       textAlign: textAlign,
-      style: GoogleFonts.workSans(
+      style: TextStyle(
+        fontFamily: 'Barlow',
         fontSize: fontSize,
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+
+  static Text regularText(
+      {required String text,
+      double fontSize = 20.0,
+      TextAlign textAlign = TextAlign.start}) {
+    return Text(
+      text,
+      textAlign: textAlign,
+      style: TextStyle(
+        fontFamily: 'Barlow',
+        fontSize: fontSize,
       ),
     );
   }

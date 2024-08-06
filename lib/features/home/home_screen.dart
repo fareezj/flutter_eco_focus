@@ -1,8 +1,11 @@
 import 'package:eco_focus/features/home/home_screen_view_model.dart';
 import 'package:eco_focus/features/home/widgets/achievements_widget.dart';
 import 'package:eco_focus/features/home/widgets/focus_time_graph_widget.dart';
+import 'package:eco_focus/features/home/widgets/category_distribution_pie_chart.dart';
 import 'package:eco_focus/features/treeGrowth/tree_growth_home_widget.dart';
 import 'package:eco_focus/features/treeGrowth/tree_growth_view_model.dart';
+import 'package:eco_focus/shared/widgets/text_widgets.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -31,9 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getPlantedTrees() async {
-    print('Get planted trees');
-    // final treeGrowthVM =
-    //     Provider.of<TreeGrowthViewModel>(context, listen: false);
     final homeVM = Provider.of<HomeScreenViewModel>(context, listen: false);
     DateTime now = DateTime.now();
 
@@ -45,6 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
           .add(const Duration(days: 5))
           .copyWith(hour: 0, minute: 0, second: 0),
     );
+    if (result != null) {
+      homeVM.plotPieChart(result);
+    }
   }
 
   @override
@@ -61,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
               child: Column(
                 children: [
-                  const Text('Eco Focus'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -69,9 +71,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () =>
                               value.switchDate(DateSwitchMode.previous),
                           child: const Icon(Icons.arrow_back_ios_new)),
-                      Text(dateFormat.format(value.startDate).toString()),
+                      TextWidgets.secondaryTitleText(
+                          text: dateFormat.format(value.startDate).toString(),
+                          fontSize: 14),
                       const SizedBox(width: 20.0),
-                      Text(dateFormat.format(value.endDate).toString()),
+                      TextWidgets.secondaryTitleText(
+                          text: dateFormat.format(value.endDate).toString(),
+                          fontSize: 14),
                       GestureDetector(
                           onTap: () => value.switchDate(DateSwitchMode.next),
                           child: const Icon(Icons.arrow_forward_ios)),
@@ -83,30 +89,38 @@ class _HomeScreenState extends State<HomeScreen> {
                         sessionList: viewModel.sessions!,
                       ),
                     ] else ...[
-                      const SizedBox(
+                      SizedBox(
                         height: 250.0,
-                      )
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: TextWidgets.regularText(
+                                text: 'No focus recorded',
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                height: 20.0,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: const BoxDecoration(
+                                  color: Colors.brown,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20.0),
+                                    topRight: Radius.circular(20.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ],
                   const FocusTimeGraphWidget(),
-                  Visibility(
-                    visible: false,
-                    child: ElevatedButton(
-                      onPressed: () => value.getAllSession(
-                        startDate: DateTime.now(),
-                        endDate: DateTime.now().add(
-                          const Duration(days: 6),
-                        ),
-                      ),
-                      child: const Text('Get Sessions'),
-                    ),
-                  ),
-                  Switch(
-                    value: value.isDarkTheme,
-                    onChanged: (_) {
-                      value.switchTheme();
-                    },
-                  ),
+                  const SizedBox(height: 30.0),
+                  const CategoryDistributionPieChart()
                 ],
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:eco_focus/features/home/home_screen.dart';
+import 'package:eco_focus/features/settings/settings_screen.dart';
 import 'package:eco_focus/features/startSession/start_session_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
   static const List<Widget> _screenList = <Widget>[
     HomeScreen(),
     StartSessionScreen(),
-    HomeScreen(),
+    SettingsScreen(),
   ];
 
   @override
@@ -34,7 +35,8 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.star_rounded), label: 'Focus'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Settings'),
         ],
         currentIndex: _selectedIndex,
         onTap: _onChangedTab,

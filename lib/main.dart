@@ -2,6 +2,7 @@ import 'package:eco_focus/db/dao/category_dao.dart';
 import 'package:eco_focus/db/dao/session_dao.dart';
 import 'package:eco_focus/features/home/home_screen_view_model.dart';
 import 'package:eco_focus/features/liveSession/live_session_view_model.dart';
+import 'package:eco_focus/features/settings/settings_view_model.dart';
 import 'package:eco_focus/features/treeGrowth/tree_growth_view_model.dart';
 import 'package:eco_focus/main_screen.dart';
 import 'package:eco_focus/models/category/category_model.dart';
@@ -44,6 +45,9 @@ void main() async {
         create: (context) => CategoryRepositoryImpl(
           CategoryDao(AppDatabase.instance),
         ),
+      ),
+      ChangeNotifierProvider<SettingsViewModel>(
+        create: (context) => SettingsViewModel(),
       ),
       ChangeNotifierProvider(
         create: (context) => TreeGrowthViewModel(),
@@ -107,7 +111,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _seedCategoryList();
@@ -116,10 +119,11 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeScreenViewModel>(
+    return Consumer<SettingsViewModel>(
       builder: (context, value, child) {
         return MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Eco Focus',
+          debugShowCheckedModeBanner: false,
           theme:
               value.isDarkTheme ? materialTheme.dark() : materialTheme.light(),
           initialRoute: '/main',

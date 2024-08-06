@@ -1,5 +1,7 @@
 import 'package:eco_focus/models/session/session_model.dart';
 import 'package:eco_focus/repositories/session_repository.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 enum DateSwitchMode { previous, next }
@@ -45,24 +47,14 @@ class HomeScreenViewModel extends ChangeNotifier {
       {required DateTime startDate, required DateTime endDate}) async {
     try {
       List<SessionModel> result = [];
-      sessions?.clear();
       xAxisList.clear();
       yAxisList.clear();
       var list = await sessionRepository.getAllSession();
-      print(list);
       notifyListeners();
 
       if (list != null) {
         for (var element in list) {
           DateTime sessionDate = DateTime.parse(element.createdDate);
-
-          print('Start Date: $startDate');
-          print('End Date: $endDate');
-
-          print(
-              sessionDate.isAfter(startDate) && sessionDate.isBefore(endDate) ||
-                  sessionDate.isAtSameMomentAs(startDate) ||
-                  sessionDate.isAtSameMomentAs(endDate));
 
           if (sessionDate.isAfter(startDate) && sessionDate.isBefore(endDate) ||
               sessionDate.isAtSameMomentAs(startDate) ||
@@ -78,6 +70,53 @@ class HomeScreenViewModel extends ChangeNotifier {
       return result;
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  List<PieChartSectionData> plotPieChart(List<SessionModel> sessionList) {
+    final Map<String, double> categoryTimeMap = {};
+
+    for (var session in sessionList) {
+      if (categoryTimeMap.containsKey(session.categoryId)) {
+        categoryTimeMap[session.categoryId] =
+            categoryTimeMap[session.categoryId]! +
+                double.parse(session.focusedTime.substring(0, 2));
+      } else {
+        categoryTimeMap[session.categoryId] =
+            double.parse(session.focusedTime.substring(0, 2));
+      }
+    }
+    final double totalTime = categoryTimeMap.values.reduce((a, b) => a + b);
+
+    return categoryTimeMap.entries.map((entry) {
+      final double percentage = (entry.value / totalTime) * 100;
+      return PieChartSectionData(
+        color: getColorForCategory(entry.key),
+        value: percentage,
+        title: '${entry.key}: ${percentage.toStringAsFixed(1)}%',
+        radius: 70,
+        titleStyle: const TextStyle(
+          fontSize: 12,
+          fontFamily: "Barlow",
+          fontWeight: FontWeight.w600,
+          color: Color(0xffffffff),
+        ),
+      );
+    }).toList();
+  }
+
+  Color getColorForCategory(String category) {
+    // Assign a color based on the category
+    switch (category) {
+      case 'Work':
+        return Colors.blue;
+      case 'Study':
+        return Colors.green;
+      case 'Read':
+        return Colors.red;
+      // Add more cases for different categories
+      default:
+        return Colors.grey;
     }
   }
 }
