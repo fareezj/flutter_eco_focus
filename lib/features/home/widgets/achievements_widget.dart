@@ -1,3 +1,4 @@
+import 'package:eco_focus/features/treeGrowth/tree_growth_home_widget.dart';
 import 'package:flutter/material.dart';
 
 class AchievementsWidget extends StatefulWidget {
@@ -10,9 +11,6 @@ class AchievementsWidget extends StatefulWidget {
 class _AchievementsWidgetState extends State<AchievementsWidget> {
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 100,
-      child: Text('Achievements'),
-    );
+    return const SizedBox();
   }
 }

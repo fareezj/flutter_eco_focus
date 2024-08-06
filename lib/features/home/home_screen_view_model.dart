@@ -7,58 +7,73 @@ enum DateSwitchMode { previous, next }
 class HomeScreenViewModel extends ChangeNotifier {
   final SessionRepository sessionRepository;
 
-  HomeScreenViewModel({required this.sessionRepository});
+  HomeScreenViewModel({required this.sessionRepository}) {
+    DateTime now = DateTime.now();
+    startDate = now
+        .subtract(Duration(days: now.weekday - 1))
+        .copyWith(hour: 0, minute: 0, second: 0);
+    endDate = startDate
+        .add(const Duration(days: 6))
+        .copyWith(hour: 0, minute: 0, second: 0);
+  }
 
   bool isDarkTheme = false;
   List<SessionModel>? sessions;
   List<String> xAxisList = [];
   List<String> yAxisList = [];
+  late DateTime startDate;
+  late DateTime endDate;
 
-  DateTime startDate =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
-          .subtract(const Duration(days: 5));
-
-  DateTime endDate = DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
-      .subtract(const Duration(days: 5))
-      .add(const Duration(days: 5));
+  void switchDate(DateSwitchMode mode) {
+    if (mode == DateSwitchMode.next) {
+      startDate = startDate.add(const Duration(days: 7));
+      endDate = endDate.add(const Duration(days: 7));
+    } else {
+      startDate = startDate.subtract(const Duration(days: 7));
+      endDate = endDate.subtract(const Duration(days: 7));
+    }
+    getAllSession(startDate: startDate, endDate: endDate);
+    notifyListeners();
+  }
 
   void switchTheme() {
     isDarkTheme = !isDarkTheme;
     notifyListeners();
   }
 
-  void switchDate(DateSwitchMode mode) {
-    if (mode == DateSwitchMode.next) {
-      startDate = startDate.add(const Duration(days: 5));
-      endDate = endDate.add(const Duration(days: 5));
-    } else {
-      startDate = startDate.subtract(const Duration(days: 5));
-      endDate = endDate.subtract(const Duration(days: 5));
-    }
-    getAllSession(startDate: startDate, endDate: endDate);
-    notifyListeners();
-  }
-
   Future<List<SessionModel>?> getAllSession(
       {required DateTime startDate, required DateTime endDate}) async {
     try {
+      List<SessionModel> result = [];
+      sessions?.clear();
       xAxisList.clear();
       yAxisList.clear();
-      var result = await sessionRepository.getAllSession();
-      sessions = result;
+      var list = await sessionRepository.getAllSession();
+      print(list);
       notifyListeners();
 
-      if (result != null) {
-        for (var element in result) {
+      if (list != null) {
+        for (var element in list) {
           DateTime sessionDate = DateTime.parse(element.createdDate);
+
+          print('Start Date: $startDate');
+          print('End Date: $endDate');
+
+          print(
+              sessionDate.isAfter(startDate) && sessionDate.isBefore(endDate) ||
+                  sessionDate.isAtSameMomentAs(startDate) ||
+                  sessionDate.isAtSameMomentAs(endDate));
+
           if (sessionDate.isAfter(startDate) && sessionDate.isBefore(endDate) ||
               sessionDate.isAtSameMomentAs(startDate) ||
               sessionDate.isAtSameMomentAs(endDate)) {
             xAxisList.add(element.createdDate);
             yAxisList.add(element.focusedTime);
+            result.add(element);
           }
         }
       }
+      sessions = result;
       notifyListeners();
       return result;
     } catch (e) {

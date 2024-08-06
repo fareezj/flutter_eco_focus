@@ -33,7 +33,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
     super.initState();
 
     setState(() {
-      setDuration = _parseDuration("10:10");
+      setDuration = _parseDuration(widget.selectedTime);
     });
 
     _animationController =
@@ -43,28 +43,27 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
       setState(() {});
       if (_animationController.isAnimating) {
         //setState(() => growthLevel = _animationController.value.toInt());
-        if (_parseTimer((setDuration * (1 - _animationController.value))) ==
-            "10:04") {
+        if (_parseTimer((setDuration * _animationController.value)) ==
+            "04:50") {
           setState(() => growthLevel = 2);
         }
-        if (_parseTimer((setDuration * (1 - _animationController.value))) ==
-            "09:50") {
+        if (_parseTimer((setDuration * _animationController.value)) == "9:50") {
           setState(() => growthLevel = 3);
         }
-        if (_parseTimer((setDuration * (1 - _animationController.value))) ==
-            "09:40") {
+        if (_parseTimer((setDuration * _animationController.value)) ==
+            "24:50") {
           setState(() => growthLevel = 4);
         }
-        if (_parseTimer((setDuration * (1 - _animationController.value))) ==
-            "09:30") {
+        if (_parseTimer((setDuration * _animationController.value)) ==
+            "34:50") {
           setState(() => growthLevel = 5);
         }
-        if (_parseTimer((setDuration * (1 - _animationController.value))) ==
-            "09:20") {
+        if (_parseTimer((setDuration * _animationController.value)) ==
+            "44:50") {
           setState(() => growthLevel = 6);
         }
-        if (_parseTimer((setDuration * (1 - _animationController.value))) ==
-            "09:10") {
+        if (_parseTimer((setDuration * _animationController.value)) ==
+            "55:00") {
           setState(() => growthLevel = 7);
         }
       }
@@ -111,20 +110,18 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
     var id = const UuidV4().generate();
     final liveSessionViewModel =
         Provider.of<LiveSessionViewModel>(context, listen: false);
-    // TODO: CHANGE DATE
     liveSessionViewModel
         .saveSession(
           SessionModel(
-              id: id.toString(),
-              name: widget.selectedCategory.name,
-              categoryId: widget.selectedCategory.name,
-              targetTime: widget.selectedTime.toString(),
-              focusedTime: widget.selectedTime.toString(),
-              createdTime:
-                  DateTime.now().add(const Duration(days: 1)).toString(),
-              createdDate:
-                  DateTime.now().add(const Duration(days: 6)).toString(),
-              treeGrowthLevel: "1"),
+            id: id.toString(),
+            name: widget.selectedCategory.name,
+            categoryId: widget.selectedCategory.name,
+            targetTime: widget.selectedTime.toString(),
+            focusedTime: widget.selectedTime.toString(),
+            createdTime: DateTime.now().toString(),
+            createdDate: DateTime.now().toString(),
+            treeGrowthLevel: growthLevel.toString(),
+          ),
         )
         .then(
           (a) => CustomDialog().infoDialog(
@@ -182,8 +179,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
                 ),
                 const SizedBox(height: 40.0),
                 TextWidgets.titleText(
-                  text: _parseTimer(
-                      (setDuration * (1 - _animationController.value))),
+                  text: _parseTimer((setDuration * _animationController.value)),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(

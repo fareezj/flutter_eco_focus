@@ -2,6 +2,7 @@ import 'package:eco_focus/db/dao/category_dao.dart';
 import 'package:eco_focus/db/dao/session_dao.dart';
 import 'package:eco_focus/features/home/home_screen_view_model.dart';
 import 'package:eco_focus/features/liveSession/live_session_view_model.dart';
+import 'package:eco_focus/features/treeGrowth/tree_growth_view_model.dart';
 import 'package:eco_focus/main_screen.dart';
 import 'package:eco_focus/models/category/category_model.dart';
 import 'package:eco_focus/repositories/category_repository.dart';
@@ -43,6 +44,9 @@ void main() async {
         create: (context) => CategoryRepositoryImpl(
           CategoryDao(AppDatabase.instance),
         ),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => TreeGrowthViewModel(),
       ),
       ChangeNotifierProvider(
         create: (context) => AuthViewModel(
@@ -105,6 +109,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     _seedCategoryList();
   }
 

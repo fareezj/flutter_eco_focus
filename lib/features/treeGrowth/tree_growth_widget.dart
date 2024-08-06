@@ -173,7 +173,6 @@ class _TreeGrowthWidgetState extends State<TreeGrowthWidget>
                   ),
                 ),
               ),
-              Text(widget.growthLevel.toString())
             ],
           ),
           // const SizedBox(height: 20),

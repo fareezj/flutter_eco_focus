@@ -24,20 +24,6 @@ class _FocusTimeGraphWidgetState extends State<FocusTimeGraphWidget> {
       builder: (context, value, child) {
         return Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                    onTap: () => value.switchDate(DateSwitchMode.previous),
-                    child: const Icon(Icons.arrow_back_ios_new)),
-                Text(dateFormat.format(value.startDate).toString()),
-                const SizedBox(width: 20.0),
-                Text(dateFormat.format(value.endDate).toString()),
-                GestureDetector(
-                    onTap: () => value.switchDate(DateSwitchMode.next),
-                    child: const Icon(Icons.arrow_forward_ios)),
-              ],
-            ),
             const SizedBox(height: 12.0),
             Card(
               child: Padding(
@@ -174,7 +160,7 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
         values.map((e) => double.tryParse(e.substring(0, 2)) ?? 0.0).toList();
 
     for (int i = 0; i < dates.length; i++) {
-      print(yValues[i]);
+      //print(yValues[i]);
       // Extract only the date part
       String datePart = dates[i].split(' ')[0];
 
@@ -253,25 +239,23 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
   SideTitles leftTitles() => SideTitles(
         getTitlesWidget: leftTitleWidgets,
         showTitles: true,
-        interval: 5,
+        interval: (calculateMaxY(
+                  aggregateData(
+                      Provider.of<HomeScreenViewModel>(context, listen: false)
+                          .xAxisList,
+                      Provider.of<HomeScreenViewModel>(context, listen: false)
+                          .yAxisList),
+                ) -
+                calculateMinY(
+                  aggregateData(
+                      Provider.of<HomeScreenViewModel>(context, listen: false)
+                          .xAxisList,
+                      Provider.of<HomeScreenViewModel>(context, listen: false)
+                          .yAxisList),
+                )) /
+            (5 - 1),
         reservedSize: 60,
       );
-
-  //   interval: (calculateMaxY(
-  //       aggregateData(
-  //           Provider.of<HomeScreenViewModel>(context, listen: false)
-  //               .xAxisList,
-  //           Provider.of<HomeScreenViewModel>(context, listen: false)
-  //               .yAxisList),
-  //     ) -
-  //     calculateMinY(
-  //       aggregateData(
-  //           Provider.of<HomeScreenViewModel>(context, listen: false)
-  //               .xAxisList,
-  //           Provider.of<HomeScreenViewModel>(context, listen: false)
-  //               .yAxisList),
-  //     )) /
-  // (5 - 1),
 
   @override
   Widget build(BuildContext context) {
