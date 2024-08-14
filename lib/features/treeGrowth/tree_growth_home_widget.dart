@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:eco_focus/features/home/home_screen_view_model.dart';
 import 'package:eco_focus/features/treeGrowth/tree_growth_view_model.dart';
 import 'package:eco_focus/models/session/session_model.dart';
 import 'package:flutter/material.dart';
@@ -17,16 +18,14 @@ class _TreeGrowthHomeWidgetState extends State<TreeGrowthHomeWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final viewModel =
-          Provider.of<TreeGrowthViewModel>(context, listen: false);
-      viewModel.plantTree(widget.sessionList, context);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final double maxHeight = MediaQuery.of(context).size.height;
+    final viewModel = Provider.of<TreeGrowthViewModel>(context, listen: false);
+    if (widget.sessionList.isNotEmpty) {
+      viewModel.plantTree(widget.sessionList, context);
+    }
 
     return SizedBox(
       height: 250.0,

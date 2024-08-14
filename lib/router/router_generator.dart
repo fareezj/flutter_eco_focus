@@ -1,4 +1,5 @@
 import 'package:eco_focus/features/liveSession/live_session_screen.dart';
+import 'package:eco_focus/features/sessionList/session_list_screen.dart';
 import 'package:eco_focus/features/settings/settings_screen.dart';
 import 'package:eco_focus/features/startSession/start_session_screen.dart';
 import 'package:eco_focus/main_screen.dart';
@@ -19,6 +20,8 @@ class RouterGenerator {
         return MaterialPageRoute(builder: (_) => const MainScreen());
       case '/home':
         return MaterialPageRoute(builder: (_) => const HomeScreen());
+      case '/session-list':
+        return MaterialPageRoute(builder: (_) => const SessionListScreen());
       case '/settings':
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case '/start-session':

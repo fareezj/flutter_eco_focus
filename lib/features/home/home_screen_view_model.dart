@@ -1,7 +1,6 @@
 import 'package:eco_focus/models/session/session_model.dart';
 import 'package:eco_focus/repositories/session_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 enum DateSwitchMode { previous, next }
@@ -25,6 +24,7 @@ class HomeScreenViewModel extends ChangeNotifier {
   List<String> yAxisList = [];
   late DateTime startDate;
   late DateTime endDate;
+  double totalHours = 0.0;
 
   void switchDate(DateSwitchMode mode) {
     if (mode == DateSwitchMode.next) {
@@ -86,10 +86,10 @@ class HomeScreenViewModel extends ChangeNotifier {
             double.parse(session.focusedTime.substring(0, 2));
       }
     }
-    final double totalTime = categoryTimeMap.values.reduce((a, b) => a + b);
+    totalHours = categoryTimeMap.values.reduce((a, b) => a + b);
 
     return categoryTimeMap.entries.map((entry) {
-      final double percentage = (entry.value / totalTime) * 100;
+      final double percentage = (entry.value / totalHours) * 100;
       return PieChartSectionData(
         color: getColorForCategory(entry.key),
         value: percentage,

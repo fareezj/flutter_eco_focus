@@ -11,12 +11,14 @@ class TreeGrowthViewModel extends ChangeNotifier {
     final Random random = Random();
     List<Widget> filteredTrees = [];
 
-    final double randomLeft =
-        random.nextDouble() * (maxWidth - 150); // 150 is the image width
-
     for (var element in sessionList) {
+      var day = DateTime.parse(element.createdDate).day;
+      var min = DateTime.parse(element.createdDate).minute;
+
+      final double randomLeft = random.nextDouble() * (maxWidth - 150);
+
       filteredTrees.add(Positioned(
-        left: random.nextDouble() * (maxWidth - 150),
+        left: randomLeft,
         child: Image.asset(
           'assets/images/tree-${(int.parse(element.treeGrowthLevel) + 1).toString()}.png',
           height: 150.0,

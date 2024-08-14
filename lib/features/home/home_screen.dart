@@ -4,6 +4,7 @@ import 'package:eco_focus/features/home/widgets/focus_time_graph_widget.dart';
 import 'package:eco_focus/features/home/widgets/category_distribution_pie_chart.dart';
 import 'package:eco_focus/features/treeGrowth/tree_growth_home_widget.dart';
 import 'package:eco_focus/features/treeGrowth/tree_growth_view_model.dart';
+import 'package:eco_focus/shared/constants/constants.dart';
 import 'package:eco_focus/shared/widgets/text_widgets.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
-  DateFormat dateFormatMonth = DateFormat('MMMM');
   var initialStartDate = DateTime.now().copyWith(hour: 0, minute: 0, second: 0);
   var intialEndDate = DateTime.now()
       .add(const Duration(days: 5))
@@ -52,13 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<HomeScreenViewModel>(context, listen: false);
-
     return Scaffold(
       floatingActionButton:
           IconButton(onPressed: () {}, icon: const Icon(Icons.start)),
       body: SafeArea(child: Consumer<HomeScreenViewModel>(
         builder: (context, value, child) {
+          print('Get Sessions: ${value.sessions}');
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -72,21 +70,29 @@ class _HomeScreenState extends State<HomeScreen> {
                               value.switchDate(DateSwitchMode.previous),
                           child: const Icon(Icons.arrow_back_ios_new)),
                       TextWidgets.secondaryTitleText(
-                          text: dateFormat.format(value.startDate).toString(),
+                          text: Constants.dateFormat
+                              .format(value.startDate)
+                              .toString(),
                           fontSize: 14),
                       const SizedBox(width: 20.0),
                       TextWidgets.secondaryTitleText(
-                          text: dateFormat.format(value.endDate).toString(),
+                          text: Constants.dateFormat
+                              .format(value.endDate)
+                              .toString(),
                           fontSize: 14),
                       GestureDetector(
                           onTap: () => value.switchDate(DateSwitchMode.next),
                           child: const Icon(Icons.arrow_forward_ios)),
                     ],
                   ),
-                  if (viewModel.sessions != null) ...[
-                    if (viewModel.sessions!.isNotEmpty) ...[
-                      TreeGrowthHomeWidget(
-                        sessionList: viewModel.sessions!,
+                  if (value.sessions != null) ...[
+                    if (value.sessions!.isNotEmpty) ...[
+                      GestureDetector(
+                        onTap: () =>
+                            Navigator.pushNamed(context, '/session-list'),
+                        child: TreeGrowthHomeWidget(
+                          sessionList: value.sessions!,
+                        ),
                       ),
                     ] else ...[
                       SizedBox(

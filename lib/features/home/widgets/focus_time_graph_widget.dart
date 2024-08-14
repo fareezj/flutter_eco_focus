@@ -234,6 +234,8 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 13);
     String text = value.toStringAsFixed(1);
 
+    print(value);
+
     return SideTitleWidget(
       axisSide: meta.axisSide,
       space: 20,
@@ -241,31 +243,34 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
     );
   }
 
-  SideTitles leftTitles() => SideTitles(
-        getTitlesWidget: leftTitleWidgets,
-        showTitles: true,
-        interval: (calculateMaxY(
-                      aggregateData(
-                          Provider.of<HomeScreenViewModel>(context,
-                                  listen: false)
-                              .xAxisList,
-                          Provider.of<HomeScreenViewModel>(context,
-                                  listen: false)
-                              .yAxisList),
-                    ) -
-                    calculateMinY(
-                      aggregateData(
-                          Provider.of<HomeScreenViewModel>(context,
-                                  listen: false)
-                              .xAxisList,
-                          Provider.of<HomeScreenViewModel>(context,
-                                  listen: false)
-                              .yAxisList),
-                    )) /
-                (5 - 1) -
-            10,
-        reservedSize: 60,
-      );
+  SideTitles leftTitles() {
+    final viewModel = Provider.of<HomeScreenViewModel>(context, listen: true);
+
+    double calculatedInterval = calculateMaxY(
+          aggregateData(
+              Provider.of<HomeScreenViewModel>(context, listen: true).xAxisList,
+              Provider.of<HomeScreenViewModel>(context, listen: true)
+                  .yAxisList),
+        ) -
+        calculateMinY(
+              aggregateData(
+                  Provider.of<HomeScreenViewModel>(context, listen: true)
+                      .xAxisList,
+                  Provider.of<HomeScreenViewModel>(context, listen: true)
+                      .yAxisList),
+            ) /
+            (5 - 1) -
+        300;
+
+    print(calculatedInterval);
+
+    return SideTitles(
+      getTitlesWidget: leftTitleWidgets,
+      showTitles: true,
+      interval: calculatedInterval <= 0.0 ? 5 : calculatedInterval,
+      reservedSize: 60,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
