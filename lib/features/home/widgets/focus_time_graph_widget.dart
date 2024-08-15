@@ -164,6 +164,7 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
     List<double> yValues =
         values.map((e) => double.tryParse(e.substring(0, 2)) ?? 0.0).toList();
 
+    print('Dates length: ${dates.length}');
     for (int i = 0; i < dates.length; i++) {
       //print(yValues[i]);
       // Extract only the date part
@@ -174,12 +175,14 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
       } else {
         aggregatedData[datePart] = yValues[i];
       }
+      print('Building agg data: $aggregatedData');
     }
 
     return aggregatedData;
   }
 
   List<FlSpot> generateAggregatedSpots(Map<String, double> aggregatedData) {
+    print('AggregatedData: $aggregatedData');
     List<FlSpot> spots = [];
     int index = 0;
 
@@ -234,8 +237,6 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 13);
     String text = value.toStringAsFixed(1);
 
-    print(value);
-
     return SideTitleWidget(
       axisSide: meta.axisSide,
       space: 20,
@@ -261,8 +262,6 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
             ) /
             (5 - 1) -
         300;
-
-    print(calculatedInterval);
 
     return SideTitles(
       getTitlesWidget: leftTitleWidgets,

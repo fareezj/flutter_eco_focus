@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DateTime now = DateTime.now();
 
     var result = await homeVM.getAllSession(
+      context: context,
       startDate: now
           .subtract(Duration(days: now.weekday - 1))
           .copyWith(hour: 0, minute: 0, second: 0),
@@ -66,8 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                          onTap: () =>
-                              value.switchDate(DateSwitchMode.previous),
+                          onTap: () => value.switchDate(
+                              DateSwitchMode.previous, context),
                           child: const Icon(Icons.arrow_back_ios_new)),
                       TextWidgets.secondaryTitleText(
                           text: Constants.dateFormat
@@ -81,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               .toString(),
                           fontSize: 14),
                       GestureDetector(
-                          onTap: () => value.switchDate(DateSwitchMode.next),
+                          onTap: () =>
+                              value.switchDate(DateSwitchMode.next, context),
                           child: const Icon(Icons.arrow_forward_ios)),
                     ],
                   ),
@@ -91,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () =>
                             Navigator.pushNamed(context, '/session-list'),
                         child: TreeGrowthHomeWidget(
-                          sessionList: value.sessions!,
+                          plantedTrees: value.plantedTrees,
                         ),
                       ),
                     ] else ...[

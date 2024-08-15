@@ -12,9 +12,6 @@ class TreeGrowthViewModel extends ChangeNotifier {
     List<Widget> filteredTrees = [];
 
     for (var element in sessionList) {
-      var day = DateTime.parse(element.createdDate).day;
-      var min = DateTime.parse(element.createdDate).minute;
-
       final double randomLeft = random.nextDouble() * (maxWidth - 150);
 
       filteredTrees.add(Positioned(

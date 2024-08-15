@@ -23,44 +23,52 @@ class PieChart2State extends State<CategoryDistributionPieChart> {
         child: Column(
           children: [
             TextWidgets.secondaryTitleText(
-                text: 'Category Distribution', fontSize: 16.0),
+                text: 'Sessions Distribution', fontSize: 16.0),
             Consumer<HomeScreenViewModel>(
               builder: (context, value, child) {
                 if (value.sessions != null) {
                   if (value.sessions!.isNotEmpty) {
-                    return Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: AspectRatio(
-                            aspectRatio: 1.1,
-                            child: PieChart(
-                              PieChartData(
-                                pieTouchData: PieTouchData(
-                                  touchCallback:
-                                      (FlTouchEvent event, pieTouchResponse) {
-                                    setState(() {
-                                      if (!event.isInterestedForInteractions ||
-                                          pieTouchResponse == null ||
-                                          pieTouchResponse.touchedSection ==
-                                              null) {
-                                        touchedIndex = -1;
-                                        return;
-                                      }
-                                      touchedIndex = pieTouchResponse
-                                          .touchedSection!.touchedSectionIndex;
-                                    });
-                                  },
+                    return Column(
+                      children: [
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: AspectRatio(
+                                aspectRatio: 1.1,
+                                child: PieChart(
+                                  PieChartData(
+                                    pieTouchData: PieTouchData(
+                                      touchCallback: (FlTouchEvent event,
+                                          pieTouchResponse) {
+                                        setState(() {
+                                          if (!event
+                                                  .isInterestedForInteractions ||
+                                              pieTouchResponse == null ||
+                                              pieTouchResponse.touchedSection ==
+                                                  null) {
+                                            touchedIndex = -1;
+                                            return;
+                                          }
+                                          touchedIndex = pieTouchResponse
+                                              .touchedSection!
+                                              .touchedSectionIndex;
+                                        });
+                                      },
+                                    ),
+                                    borderData: FlBorderData(
+                                      show: false,
+                                    ),
+                                    sectionsSpace: 5,
+                                    centerSpaceRadius: 60,
+                                    sections:
+                                        value.plotPieChart(value.sessions!),
+                                  ),
                                 ),
-                                borderData: FlBorderData(
-                                  show: false,
-                                ),
-                                sectionsSpace: 5,
-                                centerSpaceRadius: 50,
-                                sections: value.plotPieChart(value.sessions!),
                               ),
                             ),
-                          ),
+                          ],
                         ),
+                        const Text('hi'),
                       ],
                     );
                   }

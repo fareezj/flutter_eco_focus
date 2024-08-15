@@ -48,7 +48,6 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
           selectedTimer = timerList.first;
         },
       );
-      print("SEEDED CATEGORY LIST: $seededCategoryList");
     }
   }
 
