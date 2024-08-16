@@ -45,9 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
           .add(const Duration(days: 5))
           .copyWith(hour: 0, minute: 0, second: 0),
     );
-    if (result != null) {
-      homeVM.plotPieChart(result);
-    }
   }
 
   @override
@@ -57,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(onPressed: () {}, icon: const Icon(Icons.start)),
       body: SafeArea(child: Consumer<HomeScreenViewModel>(
         builder: (context, value, child) {
-          print('Get Sessions: ${value.sessions}');
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),

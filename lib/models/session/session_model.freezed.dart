@@ -300,3 +300,207 @@ abstract class _SessionModel implements SessionModel {
   _$$SessionModelImplCopyWith<_$SessionModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+SessionDistributionModel _$SessionDistributionModelFromJson(
+    Map<String, dynamic> json) {
+  return _SessionDistributionModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SessionDistributionModel {
+  String get categoryId => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get percentage => throw _privateConstructorUsedError;
+  double get totalHours => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $SessionDistributionModelCopyWith<SessionDistributionModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SessionDistributionModelCopyWith<$Res> {
+  factory $SessionDistributionModelCopyWith(SessionDistributionModel value,
+          $Res Function(SessionDistributionModel) then) =
+      _$SessionDistributionModelCopyWithImpl<$Res, SessionDistributionModel>;
+  @useResult
+  $Res call(
+      {String categoryId, String name, String percentage, double totalHours});
+}
+
+/// @nodoc
+class _$SessionDistributionModelCopyWithImpl<$Res,
+        $Val extends SessionDistributionModel>
+    implements $SessionDistributionModelCopyWith<$Res> {
+  _$SessionDistributionModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? categoryId = null,
+    Object? name = null,
+    Object? percentage = null,
+    Object? totalHours = null,
+  }) {
+    return _then(_value.copyWith(
+      categoryId: null == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      percentage: null == percentage
+          ? _value.percentage
+          : percentage // ignore: cast_nullable_to_non_nullable
+              as String,
+      totalHours: null == totalHours
+          ? _value.totalHours
+          : totalHours // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SessionDistributionModelImplCopyWith<$Res>
+    implements $SessionDistributionModelCopyWith<$Res> {
+  factory _$$SessionDistributionModelImplCopyWith(
+          _$SessionDistributionModelImpl value,
+          $Res Function(_$SessionDistributionModelImpl) then) =
+      __$$SessionDistributionModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String categoryId, String name, String percentage, double totalHours});
+}
+
+/// @nodoc
+class __$$SessionDistributionModelImplCopyWithImpl<$Res>
+    extends _$SessionDistributionModelCopyWithImpl<$Res,
+        _$SessionDistributionModelImpl>
+    implements _$$SessionDistributionModelImplCopyWith<$Res> {
+  __$$SessionDistributionModelImplCopyWithImpl(
+      _$SessionDistributionModelImpl _value,
+      $Res Function(_$SessionDistributionModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? categoryId = null,
+    Object? name = null,
+    Object? percentage = null,
+    Object? totalHours = null,
+  }) {
+    return _then(_$SessionDistributionModelImpl(
+      categoryId: null == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      percentage: null == percentage
+          ? _value.percentage
+          : percentage // ignore: cast_nullable_to_non_nullable
+              as String,
+      totalHours: null == totalHours
+          ? _value.totalHours
+          : totalHours // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SessionDistributionModelImpl implements _SessionDistributionModel {
+  const _$SessionDistributionModelImpl(
+      {required this.categoryId,
+      required this.name,
+      required this.percentage,
+      required this.totalHours});
+
+  factory _$SessionDistributionModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SessionDistributionModelImplFromJson(json);
+
+  @override
+  final String categoryId;
+  @override
+  final String name;
+  @override
+  final String percentage;
+  @override
+  final double totalHours;
+
+  @override
+  String toString() {
+    return 'SessionDistributionModel(categoryId: $categoryId, name: $name, percentage: $percentage, totalHours: $totalHours)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SessionDistributionModelImpl &&
+            (identical(other.categoryId, categoryId) ||
+                other.categoryId == categoryId) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.percentage, percentage) ||
+                other.percentage == percentage) &&
+            (identical(other.totalHours, totalHours) ||
+                other.totalHours == totalHours));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, categoryId, name, percentage, totalHours);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SessionDistributionModelImplCopyWith<_$SessionDistributionModelImpl>
+      get copyWith => __$$SessionDistributionModelImplCopyWithImpl<
+          _$SessionDistributionModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SessionDistributionModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SessionDistributionModel implements SessionDistributionModel {
+  const factory _SessionDistributionModel(
+      {required final String categoryId,
+      required final String name,
+      required final String percentage,
+      required final double totalHours}) = _$SessionDistributionModelImpl;
+
+  factory _SessionDistributionModel.fromJson(Map<String, dynamic> json) =
+      _$SessionDistributionModelImpl.fromJson;
+
+  @override
+  String get categoryId;
+  @override
+  String get name;
+  @override
+  String get percentage;
+  @override
+  double get totalHours;
+  @override
+  @JsonKey(ignore: true)
+  _$$SessionDistributionModelImplCopyWith<_$SessionDistributionModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}

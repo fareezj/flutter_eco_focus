@@ -26,6 +26,7 @@ class HomeScreenViewModel extends ChangeNotifier {
   List<String> xAxisList = [];
   List<String> yAxisList = [];
   List<Widget> plantedTrees = [];
+  List<SessionDistributionModel> sessionDetailsList = [];
   late DateTime startDate;
   late DateTime endDate;
   double totalHours = 0.0;
@@ -121,6 +122,7 @@ class HomeScreenViewModel extends ChangeNotifier {
 
   List<PieChartSectionData> plotPieChart(List<SessionModel> sessionList) {
     final Map<String, double> categoryTimeMap = {};
+    Set<SessionDistributionModel> accumulatedSessions = {};
 
     for (var session in sessionList) {
       if (categoryTimeMap.containsKey(session.categoryId)) {
@@ -134,10 +136,17 @@ class HomeScreenViewModel extends ChangeNotifier {
     }
     totalHours = categoryTimeMap.values.reduce((a, b) => a + b);
 
-    print(categoryTimeMap);
-
-    return categoryTimeMap.entries.map((entry) {
+    var result = categoryTimeMap.entries.map((entry) {
       final double percentage = (entry.value / totalHours) * 100;
+      accumulatedSessions.add(
+        SessionDistributionModel(
+          categoryId: entry.key,
+          name: entry.key,
+          percentage: '${percentage.toStringAsFixed(1)}%',
+          totalHours: entry.value,
+        ),
+      );
+
       return PieChartSectionData(
         color: getColorForCategory(entry.key),
         value: percentage,
@@ -151,6 +160,10 @@ class HomeScreenViewModel extends ChangeNotifier {
         ),
       );
     }).toList();
+    sessionDetailsList.clear();
+    sessionDetailsList.addAll(accumulatedSessions);
+
+    return result;
   }
 
   Color getColorForCategory(String category) {

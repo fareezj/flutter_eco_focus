@@ -164,7 +164,6 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
     List<double> yValues =
         values.map((e) => double.tryParse(e.substring(0, 2)) ?? 0.0).toList();
 
-    print('Dates length: ${dates.length}');
     for (int i = 0; i < dates.length; i++) {
       //print(yValues[i]);
       // Extract only the date part
@@ -175,14 +174,12 @@ class _FocusTimeChartState extends State<FocusTimeChart> {
       } else {
         aggregatedData[datePart] = yValues[i];
       }
-      print('Building agg data: $aggregatedData');
     }
 
     return aggregatedData;
   }
 
   List<FlSpot> generateAggregatedSpots(Map<String, double> aggregatedData) {
-    print('AggregatedData: $aggregatedData');
     List<FlSpot> spots = [];
     int index = 0;
 

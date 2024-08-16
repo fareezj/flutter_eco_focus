@@ -1,4 +1,5 @@
 import 'package:eco_focus/features/home/home_screen_view_model.dart';
+import 'package:eco_focus/features/home/widgets/session_list_item.dart';
 import 'package:eco_focus/shared/widgets/text_widgets.dart';
 import 'package:eco_focus/style/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -59,7 +60,7 @@ class PieChart2State extends State<CategoryDistributionPieChart> {
                                       show: false,
                                     ),
                                     sectionsSpace: 5,
-                                    centerSpaceRadius: 60,
+                                    centerSpaceRadius: 50,
                                     sections:
                                         value.plotPieChart(value.sessions!),
                                   ),
@@ -68,7 +69,19 @@ class PieChart2State extends State<CategoryDistributionPieChart> {
                             ),
                           ],
                         ),
-                        const Text('hi'),
+                        const SessionListItemTitle(),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: value.sessionDetailsList.length,
+                          itemBuilder: (context, index) {
+                            var item = value.sessionDetailsList[index];
+                            return SessionListItem(
+                              title: item.name,
+                              percentage: item.percentage,
+                              totalHours: item.totalHours.toString(),
+                            );
+                          },
+                        ),
                       ],
                     );
                   }

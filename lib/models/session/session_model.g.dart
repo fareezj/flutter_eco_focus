@@ -29,3 +29,21 @@ Map<String, dynamic> _$$SessionModelImplToJson(_$SessionModelImpl instance) =>
       'createdDate': instance.createdDate,
       'treeGrowthLevel': instance.treeGrowthLevel,
     };
+
+_$SessionDistributionModelImpl _$$SessionDistributionModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$SessionDistributionModelImpl(
+      categoryId: json['categoryId'] as String,
+      name: json['name'] as String,
+      percentage: json['percentage'] as String,
+      totalHours: (json['totalHours'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$$SessionDistributionModelImplToJson(
+        _$SessionDistributionModelImpl instance) =>
+    <String, dynamic>{
+      'categoryId': instance.categoryId,
+      'name': instance.name,
+      'percentage': instance.percentage,
+      'totalHours': instance.totalHours,
+    };
