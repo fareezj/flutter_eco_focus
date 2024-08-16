@@ -1,10 +1,8 @@
 import 'dart:math';
-
 import 'package:eco_focus/models/session/session_model.dart';
 import 'package:eco_focus/repositories/session_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 enum DateSwitchMode { previous, next }
 

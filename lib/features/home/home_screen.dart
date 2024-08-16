@@ -1,14 +1,11 @@
 import 'package:eco_focus/features/home/home_screen_view_model.dart';
-import 'package:eco_focus/features/home/widgets/achievements_widget.dart';
 import 'package:eco_focus/features/home/widgets/focus_time_graph_widget.dart';
 import 'package:eco_focus/features/home/widgets/category_distribution_pie_chart.dart';
 import 'package:eco_focus/features/treeGrowth/tree_growth_home_widget.dart';
-import 'package:eco_focus/features/treeGrowth/tree_growth_view_model.dart';
+import 'package:eco_focus/router/router_generator.dart';
 import 'package:eco_focus/shared/constants/constants.dart';
 import 'package:eco_focus/shared/widgets/text_widgets.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final homeVM = Provider.of<HomeScreenViewModel>(context, listen: false);
     DateTime now = DateTime.now();
 
-    var result = await homeVM.getAllSession(
+    await homeVM.getAllSession(
       context: context,
       startDate: now
           .subtract(Duration(days: now.weekday - 1))
@@ -86,8 +83,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (value.sessions != null) ...[
                     if (value.sessions!.isNotEmpty) ...[
                       GestureDetector(
-                        onTap: () =>
-                            Navigator.pushNamed(context, '/session-list'),
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          '/session-list',
+                          arguments: SessionListArguments(
+                              sessionList: value.sessions!),
+                        ),
                         child: TreeGrowthHomeWidget(
                           plantedTrees: value.plantedTrees,
                         ),
@@ -122,9 +123,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ],
-                  const FocusTimeGraphWidget(),
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      '/session-list',
+                      arguments:
+                          SessionListArguments(sessionList: value.sessions!),
+                    ),
+                    child: const FocusTimeGraphWidget(),
+                  ),
                   const SizedBox(height: 30.0),
-                  const CategoryDistributionPieChart()
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      '/session-list',
+                      arguments:
+                          SessionListArguments(sessionList: value.sessions!),
+                    ),
+                    child: const CategoryDistributionPieChart(),
+                  )
                 ],
               ),
             ),

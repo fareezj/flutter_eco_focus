@@ -2,6 +2,7 @@ import 'package:eco_focus/db/dao/category_dao.dart';
 import 'package:eco_focus/db/dao/session_dao.dart';
 import 'package:eco_focus/features/home/home_screen_view_model.dart';
 import 'package:eco_focus/features/liveSession/live_session_view_model.dart';
+import 'package:eco_focus/features/sessionList/session_list_view_model.dart';
 import 'package:eco_focus/features/settings/settings_view_model.dart';
 import 'package:eco_focus/features/treeGrowth/tree_growth_view_model.dart';
 import 'package:eco_focus/main_screen.dart';
@@ -48,6 +49,9 @@ void main() async {
       ),
       ChangeNotifierProvider<SettingsViewModel>(
         create: (context) => SettingsViewModel(),
+      ),
+      ChangeNotifierProvider<SessionListViewModel>(
+        create: (context) => SessionListViewModel(),
       ),
       ChangeNotifierProvider(
         create: (context) => TreeGrowthViewModel(),

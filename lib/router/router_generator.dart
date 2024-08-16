@@ -4,6 +4,7 @@ import 'package:eco_focus/features/settings/settings_screen.dart';
 import 'package:eco_focus/features/startSession/start_session_screen.dart';
 import 'package:eco_focus/main_screen.dart';
 import 'package:eco_focus/models/category/category_model.dart';
+import 'package:eco_focus/models/session/session_model.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_focus/features/auth/sign_in_screen.dart';
 import 'package:eco_focus/features/auth/sign_up_screen.dart';
@@ -21,7 +22,9 @@ class RouterGenerator {
       case '/home':
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case '/session-list':
-        return MaterialPageRoute(builder: (_) => const SessionListScreen());
+        var args = settings.arguments as SessionListArguments;
+        return MaterialPageRoute(
+            builder: (_) => SessionListScreen(sessionList: args.sessionList));
       case '/settings':
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case '/start-session':
@@ -48,6 +51,12 @@ class RouterGenerator {
       );
     });
   }
+}
+
+class SessionListArguments {
+  final List<SessionModel> sessionList;
+
+  SessionListArguments({required this.sessionList});
 }
 
 class LiveSessionArguments {
