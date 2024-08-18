@@ -4,6 +4,7 @@ import 'package:eco_focus/features/sessionList/widgets/session_item.dart';
 import 'package:eco_focus/models/session/session_model.dart';
 import 'package:eco_focus/shared/constants/constants.dart';
 import 'package:eco_focus/shared/widgets/text_widgets.dart';
+import 'package:eco_focus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,9 @@ class _SessionListScreenState extends State<SessionListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: TextWidgets.titleText(text: 'Session Overview'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -38,7 +42,6 @@ class _SessionListScreenState extends State<SessionListScreen> {
               builder: (context, homeValue, child) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextWidgets.titleText(text: 'Session Overview'),
                   const SizedBox(height: 15.0),
                   Consumer<SessionListViewModel>(
                     builder: (context, value, child) {
@@ -55,7 +58,8 @@ class _SessionListScreenState extends State<SessionListScreen> {
                                       "${Constants.dateFormat.format(homeValue.startDate)} to ${Constants.dateFormat.format(homeValue.endDate)}"),
                               SessionItem(
                                 title: 'Total Hours',
-                                value: '${homeValue.totalHours} mins',
+                                value: Utils().convertTimeToHoursMins(
+                                    homeValue.totalHours),
                               ),
                               SessionItem(
                                 title: 'Highest Session',
@@ -94,10 +98,22 @@ class _SessionListScreenState extends State<SessionListScreen> {
                                   ],
                                 ),
                                 const SizedBox(height: 8.0),
-                                TextWidgets.regularText(
-                                  text: 'Achivements: ${e.treeGrowthLevel}',
-                                  fontSize: 14.0,
-                                )
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextWidgets.regularText(
+                                      text: 'Achivements: ${e.treeGrowthLevel}',
+                                      fontSize: 14.0,
+                                    ),
+                                    TextWidgets.regularText(
+                                      text: Constants.dateFormat
+                                          .format(DateTime.parse(e.createdDate))
+                                          .toString(),
+                                      fontSize: 14.0,
+                                    )
+                                  ],
+                                ),
                               ],
                             ),
                           ),

@@ -8,6 +8,7 @@ import 'package:eco_focus/shared/widgets/custom_dropdown.dart';
 import 'package:eco_focus/shared/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:lottie/lottie.dart';
 
 class StartSessionScreen extends StatefulWidget {
   const StartSessionScreen({super.key});
@@ -74,11 +75,16 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextWidgets.titleText(text: 'Start Focus Session'),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.recycling, size: 100.0),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Lottie.asset(
+                    'assets/animations/tree_anim.json',
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height / 5),
+                SizedBox(height: MediaQuery.of(context).size.height / 16),
                 if (categoryList.isNotEmpty) ...[
                   TextWidgets.secondaryTitleText(text: 'Select Category:'),
                   const SizedBox(height: 8),

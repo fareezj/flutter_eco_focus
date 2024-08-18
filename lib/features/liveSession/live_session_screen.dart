@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:eco_focus/features/liveSession/live_session_view_model.dart';
 import 'package:eco_focus/features/treeGrowth/tree_growth_widget.dart';
 import 'package:eco_focus/models/category/category_model.dart';
@@ -144,12 +142,21 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: GestureDetector(
+                      onTap: () => _onCancel(context),
+                      child: const Icon(Icons.arrow_back_ios_new_rounded),
+                    ),
+                  ),
+                ),
                 TextWidgets.titleText(text: widget.selectedCategory.name),
                 TextWidgets.secondaryTitleText(
                     text: 'Target Time: ${widget.selectedTime}'),
@@ -183,39 +190,39 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 70.0, vertical: 50.0),
+                      horizontal: 70.0, vertical: 100.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
                         onPressed: () => _onCancel(context),
-                        child: const Text('Cancel'),
+                        child: const Text('Cancel Session'),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          CustomDialog().infoDialog(
-                            context: context,
-                            title: 'Session Completed!',
-                            content: 'You have completed your focus session.',
-                            onProceed: () {
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                          );
-                        },
-                        child: const Text('Start'),
-                      ),
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     CustomDialog().infoDialog(
+                      //       context: context,
+                      //       title: 'Session Completed!',
+                      //       content: 'You have completed your focus session.',
+                      //       onProceed: () {
+                      //         Navigator.pop(context);
+                      //         Navigator.pop(context);
+                      //       },
+                      //     );
+                      //   },
+                      //   child: const Text('Start'),
+                      // ),
                     ],
                   ),
                 ),
-                Consumer<LiveSessionViewModel>(
-                  builder: (context, value, child) {
-                    return ElevatedButton(
-                      onPressed: () => _onSaveSession(),
-                      child: const Text('Save'),
-                    );
-                  },
-                ),
+                // Consumer<LiveSessionViewModel>(
+                //   builder: (context, value, child) {
+                //     return ElevatedButton(
+                //       onPressed: () => _onSaveSession(),
+                //       child: const Text('Save'),
+                //     );
+                //   },
+                // ),
               ],
             ),
           ),
