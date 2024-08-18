@@ -1,10 +1,4 @@
-import 'dart:math';
-
-import 'package:eco_focus/features/home/home_screen_view_model.dart';
-import 'package:eco_focus/features/treeGrowth/tree_growth_view_model.dart';
-import 'package:eco_focus/models/session/session_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TreeGrowthHomeWidget extends StatefulWidget {
   final List<Widget> plantedTrees;

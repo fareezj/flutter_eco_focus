@@ -94,7 +94,7 @@ class HomeScreenViewModel extends ChangeNotifier {
       filteredTrees.add(Positioned(
         left: randomLeft,
         child: Image.asset(
-          'assets/images/tree-${(int.parse(element.treeGrowthLevel) + 1).toString()}.png',
+          'assets/images/tree-${element.treeGrowthLevel}.png',
           height: 150.0,
           width: 150.0,
           fit: BoxFit.contain,

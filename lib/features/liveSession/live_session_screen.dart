@@ -43,26 +43,26 @@ class _LiveSessionScreenState extends State<LiveSessionScreen>
         //setState(() => growthLevel = _animationController.value.toInt());
         if (_parseTimer((setDuration * _animationController.value)) ==
             "04:50") {
-          setState(() => growthLevel = 2);
+          setState(() => growthLevel = 1);
         }
         if (_parseTimer((setDuration * _animationController.value)) == "9:50") {
-          setState(() => growthLevel = 3);
+          setState(() => growthLevel = 2);
         }
         if (_parseTimer((setDuration * _animationController.value)) ==
             "24:50") {
-          setState(() => growthLevel = 4);
+          setState(() => growthLevel = 3);
         }
         if (_parseTimer((setDuration * _animationController.value)) ==
             "34:50") {
-          setState(() => growthLevel = 5);
+          setState(() => growthLevel = 4);
         }
         if (_parseTimer((setDuration * _animationController.value)) ==
             "44:50") {
-          setState(() => growthLevel = 6);
+          setState(() => growthLevel = 5);
         }
         if (_parseTimer((setDuration * _animationController.value)) ==
             "55:00") {
-          setState(() => growthLevel = 7);
+          setState(() => growthLevel = 6);
         }
       }
       if (_animationController.isCompleted) {
